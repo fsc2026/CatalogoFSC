@@ -447,7 +447,7 @@
                 const photo = clean(cols[5]);
 
                 if (name) {
-                    const isActive = status.toLowerCase() !== 'oculto' && 
+                    const is Active = status.toLowerCase() !== 'oculto' && 
                                      status.toLowerCase() !== 'agotado' && 
                                      status.toLowerCase() !== 'inactivo';
                     
@@ -765,7 +765,7 @@
             const name = document.getElementById('clientNameInput').value.trim() || 'Cliente';
             const dateStr = new Date().toLocaleDateString('es-VE');
             
-            let msg = `⚡ *COTIZACIÓN DE SERVICIOS - FONSECA SOLUCIONES*\n`;
+            let msg = `⚡ *COTIZACIÓN DE SERVICIOS - FONSECA SOLUCIONES COMERCIALES*\n`;
             msg += `📅 *Fecha:* ${dateStr}\n`;
             msg += `👤 *Cliente:* ${name}\n`;
             msg += `💳 *Modalidad de Pago:* ${pricingMode === 'OFERTA' ? 'OFERTA (DIVISA / USD)' : 'PAGO EN BOLÍVARES (TASA BCV)'}\n`;
