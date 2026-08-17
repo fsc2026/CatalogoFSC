@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#090d16">
-    <title>Catálogo Web - Fonseca Soluciones Comerciales</title>
+    <title>Catálogo Web Universal Pro - Fonseca Soluciones</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -72,16 +72,16 @@
     <!-- CONTENEDOR PRINCIPAL -->
     <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6">
         
-        <!-- HEADER CORPORATIVO TECNOLÓGICO -->
+        <!-- HEADER CORPORATIVO TECNOLÓGICO CON LOGO DE MARCA -->
         <header class="card-pro rounded-3xl p-5 mb-6 border border-cyan-500/20 shadow-2xl shadow-cyan-950/40">
             <div class="flex flex-col lg:flex-row justify-between items-center gap-5">
                 
                 <!-- IDENTIDAD / LOGO DE MARCA -->
                 <div class="flex items-center gap-4 w-full lg:w-auto">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-700 p-0.5 shadow-lg shadow-cyan-500/20 flex items-center justify-center shrink-0">
-                        <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-                            <i data-lucide="zap" class="w-7 h-7 text-cyan-400"></i>
-                        </div>
+                    <!-- CONTENEDOR DEL LOGO DE MARCA (Logofsc.png) -->
+                    <div class="h-16 px-3 py-1.5 bg-slate-900/80 border border-cyan-500/30 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-950/50 shrink-0">
+                        <img src="Logofsc.png" alt="Fonseca Soluciones" class="h-12 w-auto object-contain" 
+                             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-12 h-12 rounded-2xl bg-slate-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-lg\'><i data-lucide=\'zap\' class=\'w-7 h-7 text-cyan-400\'></i></div>'; lucide.createIcons();">
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
@@ -326,6 +326,17 @@
             }, 2500);
         }
 
+        // VALIDACIÓN ROBUSTA DE ESTATUS DE PRODUCTO
+        function isProductActive(p) {
+            if (!p) return false;
+            if (p.active === false || p.active === 'false' || p.active === 0 || p.active === '0') return false;
+            if (typeof p.active === 'string') {
+                const s = p.active.toLowerCase().trim();
+                if (s === 'oculto' || s === 'agotado' || s === 'inactivo' || s === 'no' || s === 'desactivado' || s === 'disabled') return false;
+            }
+            return true;
+        }
+
         // 1. SINCRONIZACIÓN DE TASA BCV EN VIVO
         async function fetchBcvRate() {
             const tasaEl = document.getElementById('tasaDisplay');
@@ -447,9 +458,8 @@
                 const photo = clean(cols[5]);
 
                 if (name) {
-                    const isActive = status.toLowerCase() !== 'oculto' && 
-                                     status.toLowerCase() !== 'agotado' && 
-                                     status.toLowerCase() !== 'inactivo';
+                    const sLower = status.toLowerCase().trim();
+                    const isActive = !(sLower === 'oculto' || sLower === 'agotado' || sLower === 'inactivo' || sLower === 'no' || sLower === 'desactivado' || sLower === 'false' || sLower === '0');
                     
                     const generatedId = `FS-${(i).toString().padStart(3, '0')}`;
 
@@ -566,7 +576,7 @@
 
         // 6. RENDERIZAR CATEGORÍAS
         function renderCategories() {
-            const valid = productsDatabase.filter(p => p.active !== false);
+            const valid = productsDatabase.filter(p => isProductActive(p));
             const cats = ["Todas", ...new Set(valid.map(p => p.category))];
             
             if(!cats.includes(activeCategory)) activeCategory = "Todas";
@@ -585,7 +595,7 @@
         // 7. RENDERIZAR PRODUCTOS
         function renderProducts(db = productsDatabase) {
             const grid = document.getElementById('productsGrid');
-            const filteredByAuth = db.filter(p => p.active !== false);
+            const filteredByAuth = db.filter(p => isProductActive(p));
             const filtered = filteredByAuth.filter(p => activeCategory === "Todas" || p.category === activeCategory);
             
             if (filtered.length === 0) {
@@ -665,7 +675,7 @@
         // 8. CARRITO Y COTIZACIONES
         function addToCart(id) {
             const p = productsDatabase.find(x => x.id === id);
-            if (!p || p.active === false) return;
+            if (!p || !isProductActive(p)) return;
 
             const exists = cart.find(x => x.id === id);
             if (exists) {
@@ -765,7 +775,7 @@
             const name = document.getElementById('clientNameInput').value.trim() || 'Cliente';
             const dateStr = new Date().toLocaleDateString('es-VE');
             
-            let msg = `⚡ *COTIZACIÓN DE SERVICIOS - FONSECA SOLUCIONES COMERCIALES*\n`;
+            let msg = `⚡ *COTIZACIÓN DE SERVICIOS - FONSECA SOLUCIONES*\n`;
             msg += `📅 *Fecha:* ${dateStr}\n`;
             msg += `👤 *Cliente:* ${name}\n`;
             msg += `💳 *Modalidad de Pago:* ${pricingMode === 'OFERTA' ? 'OFERTA (DIVISA / USD)' : 'PAGO EN BOLÍVARES (TASA BCV)'}\n`;
