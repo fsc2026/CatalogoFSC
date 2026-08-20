@@ -776,8 +776,10 @@
             const dateStr = new Date().toLocaleDateString('es-VE');
             
             let msg = `⚡ *COTIZACIÓN DE SERVICIOS - FONSECA SOLUCIONES*\n`;
+            
             msg += `📅 *Fecha:* ${dateStr}\n`;
             msg += `👤 *Cliente:* ${name}\n`;
+            
             msg += `💳 *Modalidad de Pago:* ${pricingMode === 'OFERTA' ? 'OFERTA (DIVISA / USD)' : 'PAGO EN BOLÍVARES (TASA BCV)'}\n`;
             msg += `───────────────────\n`;
 
@@ -807,7 +809,6 @@
                 msg += `✅ Transferencia Bancaria\n`;
             }
 
-            msg += `\n📍 *Ubicación:* Turmero - Aragua.\n`;
             msg += `¡Quedo atento a los datos para procesar el pedido!`;
 
             const encoded = encodeURIComponent(msg);
